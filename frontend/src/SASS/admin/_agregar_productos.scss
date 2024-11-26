@@ -1,0 +1,574 @@
+// Variables
+$primary-color: #ff7043; // Color principal para botones y acentos
+$secondary-color: #f4f4f4; // Fondo claro para tarjetas y formulario
+$accent-color: #333333; // Texto oscuro
+$border-color: #ddd; // Bordes suaves
+$transition: all 0.3s ease-in-out;
+$font-family: 'Roboto', sans-serif;
+
+// Global Styles
+body {
+  font-family: $font-family;
+  background-color: $secondary-color;
+  margin: 0;
+  padding: 0;
+  color: $accent-color;
+}
+
+// Contenedor principal
+.contenedor {
+  height: 100vh;
+  width: 90vw;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: $secondary-color;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 15px;
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: $primary-color;
+    }
+
+    .btn-cerrar {
+      padding: 8px 15px;
+      font-size: 1rem;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: lighten($accent-color, 10%);
+      }
+    }
+  }
+
+  // Formulario de producto
+  .formulario-producto {
+    display: flex;
+    margin: 20px 0;
+
+    .formulario-izquierda {
+      flex: 1;
+      text-align: center;
+
+      .imagen-placeholder {
+        width: 150px;
+        height: 150px;
+        background-color: $border-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        border-radius: 10px;
+        margin: 0 auto 10px auto;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+      }
+
+      input[type='file'] {
+        margin-top: 10px;
+        font-size: 0.9rem;
+      }
+    }
+
+    .formulario-derecha {
+      flex: 2;
+      padding: 0 20px;
+
+      .grupo-formulario {
+        margin-bottom: 15px;
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+          width: 100%;
+          padding: 10px;
+          font-size: 1rem;
+          border: 2px solid $border-color; // Hacer el borde más visible
+          border-radius: 8px; // Bordes redondeados
+          outline: none;
+          transition: $transition;
+        
+          &:focus {
+            border-color: $primary-color; // Cambiar color del borde al foco
+            box-shadow: 0 0 5px rgba($primary-color, 0.5); // Agregar un ligero efecto de brillo
+          }
+        
+          &::placeholder {
+            color: lighten($accent-color, 30%); // Suavizar el color de placeholder
+            font-style: italic;
+          }
+        }
+        
+        textarea {
+          resize: none;
+          height: 100px; // Ajustar altura
+        }
+      }        
+    }
+  }
+
+  // Botones
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;  // Bordes redondeados
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  
+    &:first-of-type {
+      background-color: #f0ad4e;
+      &:hover {
+        background-color: #ec971f;
+      }
+    }
+  
+    &:last-of-type {
+      background-color: #d9534f;
+      &:hover {
+        background-color: #c9302c;
+      }
+    }
+  }
+  
+
+  // Lista de productos
+  .lista-productos {
+    margin-top: 20px;
+
+    .item-producto {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid $border-color;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      background-color: $secondary-color;
+      transition: $transition;
+
+      &:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .item-izquierda {
+        display: flex;
+        align-items: center;
+
+        .imagen-placeholder {
+          width: 50px;
+          height: 50px;
+          border-radius: 5px;
+          margin-right: 10px;
+          background-size: cover;
+          background-position: center;
+        }
+      }
+
+      .item-derecha {
+        flex: 2;
+        padding: 0 20px;
+
+        p {
+          margin: 5px 0;
+
+          strong {
+            color: $primary-color;
+          }
+        }
+      }
+
+      .icono-editar,
+      .icono-eliminar {
+        button {
+          background-color: transparent;
+          border: none;
+          color: $primary-color;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+
+        input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+
+        .slider {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: $border-color;
+          transition: $transition;
+          border-radius: 20px;
+
+          &:before {
+            position: absolute;
+            content: '';
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: $secondary-color;
+            transition: $transition;
+            border-radius: 50%;
+          }
+        }
+
+        input:checked + .slider {
+          background-color: $primary-color;
+
+          &:before {
+            transform: translateX(18px);
+          }
+        }
+      }
+    }
+  }
+}
+
+.tabla-productos {
+  margin-bottom: 20px;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border-top: 2px solid $primary-color; // Agregar borde superior
+  
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid $border-color;
+      text-align: left;
+    
+  
+  
+      &:first-child {
+        border-top-left-radius: 8px; // Bordes redondeados superiores
+      }
+  
+      &:last-child {
+        border-top-right-radius: 8px;
+      }
+    }
+  
+    th {
+      background-color: $primary-color;
+      color: white;
+      font-weight: bold;
+    }
+  
+    tr {
+      &:nth-child(even) {
+        background-color: $secondary-color; // Rayado alternativo
+      }
+  
+      &:hover {
+        background-color: lighten($primary-color, 40%);
+        cursor: pointer;
+      }
+    }
+  }
+}
+  
+.lista-productos {
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+
+    th, td {
+      padding: 12px 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f5f5f5;
+      color: #333;
+      font-weight: bold;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+
+    .imagen-placeholder {
+      width: 40px;
+      height: 40px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+    }
+
+    button {
+      background-color: $primary-color;
+      color: #fff;
+      border-radius: 5px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    
+      &.btn-guardar {
+        background-color: #28a745;
+        &:hover {
+          background-color: #218838;
+        }
+      }
+    
+      &.btn-descartar {
+        background-color: #dc3545;
+        &:hover {
+          background-color: #c82333;
+        }
+      }
+    
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    
+    
+      &:last-of-type {
+        background-color: #d9534f;
+
+        &:hover {
+          background-color: #c9302c;
+        }
+      }
+    }
+  }
+}
+
+.formulario-producto {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+
+  .formulario-izquierda input[type="file"] {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .grupo-formulario input,
+  .grupo-formulario select,
+  .grupo-formulario textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid $border-color;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  
+    &:focus {
+      border-color: $primary-color;
+    }
+  
+    &::placeholder {
+      color: lighten($accent-color, 30%);
+      font-style: italic;
+    }
+  
+  
+  }
+
+  .formulario-derecha {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .grupo-formulario {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+    }
+  }
+}
+
+.botones {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.btn-guardar {
+      background-color: #28a745;
+      color: white;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+
+    &.btn-descartar {
+      background-color: #dc3545;
+      color: white;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+}
+.filtro-categoria {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  #categoriaId{
+    border-radius: 20px;
+
+    option{
+      border-radius: 20px;
+    }
+  }
+}
+
+.categorias-dropdown {
+  margin-top: 10px;
+ 
+}
+
+.categorias-dropdown select {
+  padding: 5px;
+  font-size: 16px;
+}
+@media (max-width: 768px) {
+  .filtro-categoria{
+    margin-top: 50px;
+  }
+  
+  .lista-productos table {
+    display: flex; /* Permite scroll horizontal */
+    overflow-x: auto;
+    white-space: nowrap; /* Evita saltos de línea */
+    justify-content: space-evenly;
+    align-items: center;
+   
+  
+    .botones {
+     
+     display: flex;
+    
+     justify-content: center;
+    }
+  }
+  
+
+  .lista-productos th {
+    display: none; /* Oculta los encabezados de la tabla */
+  }
+
+  .lista-productos td {
+    display: block; /* Hace que las celdas se apilen verticalmente */
+    text-align: left; /* Alinea el contenido de las celdas a la izquierda */
+    padding: 5px 0; /* Espaciado entre celdas */
+  }
+
+  .lista-productos tr {
+    display: flex; /* Hace que cada fila sea un contenedor flexible */
+    flex-direction: column; /* Apila las celdas verticalmente */
+    border-bottom: 1px solid #ccc; /* Añade un borde entre filas para separar contenido */
+    margin-bottom: 10px; /* Espaciado entre filas */
+    justify-content: center;
+  }
+
+  .lista-productos td img {
+    width: 100%; /* Ajusta las imágenes para pantallas pequeñas */
+    height: auto;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+  }
+
+  /* Opcional: estilos para botones */
+  .botones {
+    margin-top: 10px;
+  }
+
+  .botones button {
+    width: 100%; /* Botones ocupan todo el ancho */
+    margin-bottom: 5px;
+  }
+}
