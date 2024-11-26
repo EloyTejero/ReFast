@@ -635,7 +635,7 @@ app.post("/pedido/confirmarPedido", async (req, res) => {
 
     const queryPedido =
       "INSERT INTO pedido (id_usuario, fecha, precio_total, id_estado) VALUES (?, NOW(), ?, ?)";
-    connection.query(queryPedido, [usuario_id, precioTotal, 2], (err, result) => {
+    connection.query(queryPedido, [usuario_id, precioTotal, 8], (err, result) => {
       if (err) {
         console.error("Error al insertar el pedido:", err);
         return res.status(500).send({ message: "Error al guardar el pedido" });

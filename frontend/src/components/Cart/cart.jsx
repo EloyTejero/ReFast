@@ -64,7 +64,7 @@ const Cart = () => {
       );
       setMensaje(response.data.mensaje);
       setCart([]);
-      navigate("/confirmacion");
+      navigate("/");
     } catch (error) {
       console.error("Error al confirmar el pedido", error);
       setMensaje("Hubo un error al confirmar el pedido.");

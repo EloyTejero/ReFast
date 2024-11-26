@@ -892,7 +892,7 @@
 .pagRegister .cajaRegister {
   background-color: rgb(255, 255, 255);
   width: 30vw;
-  height: 70vh;
+  height: 80vh;
   border-radius: 20px;
   display: flex;
   justify-content: space-evenly;
@@ -1428,6 +1428,7 @@
   padding: 1.5rem;
   font-family: "Arial", sans-serif;
   color: #264653;
+  margin-top: 50px;
 }
 .contenedor header {
   display: flex;
@@ -1568,6 +1569,7 @@ body {
   width: 90vw;
   margin: 20px auto;
   padding: 20px;
+  margin-top: 50px;
   background-color: #f4f4f4;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -2076,6 +2078,7 @@ body {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 60px;
 }
 .pedido-lista-container table thead {
   background-color: #3498db;
