@@ -80,8 +80,8 @@ const Login = () => {
             <Send id="btn-lg" type="submit" />
           </form>
           <Link to="/register">
-            <p>No tienes cuenta todavía? Regístrate</p>
-          </Link>
+           <p>No tienes cuenta todavía? Regístrate</p>
+          </Link> 
         </div>
       </div>
     </div>

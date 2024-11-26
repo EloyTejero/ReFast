@@ -81,12 +81,12 @@ const Register = () => {
           />
           <div className="contenido-btn">
           <Send to="/login" />
-          <Link to="/login">
-            <p>¿Ya tienes una cuenta? Inicia sesión</p>
-          </Link>
 
           </div>
         </form>
+          <Link to="/login">
+            <p>¿Ya tienes una cuenta? Inicia sesión</p>
+          </Link>
       </div>
     </div>
   );

@@ -361,7 +361,7 @@ app.post("/producto", upload.single("imagen"), async (req, res) => {
     const cantidad_num = parseInt(cantidad);
     const precio_num = parseFloat(precio);
 
-    if (isNaN(cantidad_num) || isNaN(precio_num)) {
+    if (isNaN(cantidad_num) || isNaN(precio_num) || cantidad_num<0 || precio_num<0) {
       return res.status(400).json({ message: "Cantidad o precio no válidos." });
     }
 

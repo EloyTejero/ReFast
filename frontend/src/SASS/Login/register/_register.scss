@@ -11,7 +11,7 @@
     .cajaRegister{
         background-color: rgb(255, 255, 255);
         width: 30vw;
-        height: 80vh;
+        height: 70vh;
         border-radius: 20px;
         display: flex;
         justify-content: space-evenly;
@@ -32,10 +32,14 @@
           .contenido-btn{
             width: 100%;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-evenly;
             flex-direction: column;
             align-items: center;
             margin-top: 30px;
+            p{
+                text-decoration: underline;
+
+            }
           }
         }
     }

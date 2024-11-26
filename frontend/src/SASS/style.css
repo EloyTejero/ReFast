@@ -714,6 +714,7 @@
 .paginaLogin .cajaLogin p {
   color: white;
   font-size: 12px;
+  text-decoration: underline;
 }
 .paginaLogin .cajaLogin .inputs {
   width: 80%;
@@ -892,7 +893,7 @@
 .pagRegister .cajaRegister {
   background-color: rgb(255, 255, 255);
   width: 30vw;
-  height: 80vh;
+  height: 70vh;
   border-radius: 20px;
   display: flex;
   justify-content: space-evenly;
@@ -914,10 +915,13 @@
 .pagRegister .cajaRegister .contenido .contenido-btn {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
+}
+.pagRegister .cajaRegister .contenido .contenido-btn p {
+  text-decoration: underline;
 }
 
 @media (max-width: 1050px) {

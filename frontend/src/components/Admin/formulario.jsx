@@ -36,9 +36,27 @@ const FormProducto = ({ obtenerProductos }) => {
         },
       });
       alert("Producto agregado correctamente");
-      obtenerProductos(); // Actualizar la lista de productos
+      setFormData({
+        nombre: "",
+        categoria_id: "",
+        cantidad: "",
+        precio: "",
+        descripcion: "",
+        imagen: null,
+      });
+
     } catch (error) {
-      console.error("Error al guardar el producto:", error);
+      
+      alert("Error al crear el producto")
+      setFormData({
+        nombre: "",
+        categoria_id: "",
+        cantidad: "",
+        precio: "",
+        descripcion: "",
+        imagen: null,
+      });
+
     }
   };
 
