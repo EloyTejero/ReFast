@@ -26,18 +26,8 @@ CREATE TABLE `categoria` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categoria`
---
-
-LOCK TABLES `categoria` WRITE;
-/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (2,'dulce');
-/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -72,16 +62,6 @@ CREATE TABLE `estado_pedido` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `estado_pedido`
---
-
-LOCK TABLES `estado_pedido` WRITE;
-/*!40000 ALTER TABLE `estado_pedido` DISABLE KEYS */;
-INSERT INTO `estado_pedido` VALUES (2,'pendiente'),(3,'cerrado'),(4,'completado'),(5,'cancelado');
-/*!40000 ALTER TABLE `estado_pedido` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pedido`
 --
 
@@ -99,18 +79,8 @@ CREATE TABLE `pedido` (
   KEY `id_estado` (`id_estado`),
   CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`),
   CONSTRAINT `pedido_ibfk_2` FOREIGN KEY (`id_estado`) REFERENCES `estado_pedido` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pedido`
---
-
-LOCK TABLES `pedido` WRITE;
-/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (2,8,700,'2024-11-14 11:48:22',5),(5,8,500,'2024-11-14 11:48:26',2),(6,6,1000,'2024-11-14 11:48:27',2);
-/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -147,18 +117,8 @@ CREATE TABLE `pedido_producto` (
   KEY `id_pedido` (`id_pedido`),
   CONSTRAINT `pedido_producto_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id`),
   CONSTRAINT `pedido_producto_ibfk_2` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pedido_producto`
---
-
-LOCK TABLES `pedido_producto` WRITE;
-/*!40000 ALTER TABLE `pedido_producto` DISABLE KEYS */;
-INSERT INTO `pedido_producto` VALUES (8,9,5,1),(9,12,5,2),(13,5,2,2),(14,8,2,1),(17,12,6,2),(18,9,6,1);
-/*!40000 ALTER TABLE `pedido_producto` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `producto`
@@ -175,18 +135,8 @@ CREATE TABLE `producto` (
   `descripcion` varchar(255) DEFAULT NULL,
   `imagen` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `producto`
---
-
-LOCK TABLES `producto` WRITE;
-/*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (5,150,'Camiseta',50,'Camiseta de algodón en color rojo',NULL),(6,220,'Pantalón',30,'Pantalón de mezclilla de corte recto',NULL),(7,99,'Sombrero',100,'Sombrero de paja para verano',NULL),(8,500,'Bicicleta',10,'Bicicleta de montaña con frenos de disco',NULL),(9,89,'Mochila',25,'Mochila deportiva de 30L con múltiples compartimentos',NULL),(10,45,'Gorra',75,'Gorra ajustable de algodón con logo bordado',NULL),(11,750,'Laptop',15,'Laptop con procesador Intel Core i7 y 16GB de RAM',NULL),(12,39,'Taza',200,'Taza de cerámica con diseño de colores',NULL),(13,999,'Smartphone',8,'Smartphone de última generación con pantalla OLED',NULL),(14,120,'Botas',40,'Botas de cuero para invierno, resistentes al agua',NULL);
-/*!40000 ALTER TABLE `producto` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `producto_categoria`
@@ -204,18 +154,8 @@ CREATE TABLE `producto_categoria` (
   KEY `id_categoria` (`id_categoria`),
   CONSTRAINT `producto_categoria_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id`),
   CONSTRAINT `producto_categoria_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `producto_categoria`
---
-
-LOCK TABLES `producto_categoria` WRITE;
-/*!40000 ALTER TABLE `producto_categoria` DISABLE KEYS */;
-INSERT INTO `producto_categoria` VALUES (1,5,2),(4,7,2);
-/*!40000 ALTER TABLE `producto_categoria` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `rol`
@@ -230,16 +170,6 @@ CREATE TABLE `rol` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `rol`
---
-
-LOCK TABLES `rol` WRITE;
-/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (3,'admin'),(4,'user');
-/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `usuario`
@@ -257,18 +187,8 @@ CREATE TABLE `usuario` (
   PRIMARY KEY (`id`),
   KEY `rol` (`rol`),
   CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `rol` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuario`
---
-
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (6,'eloy','contrasena',3,'eloy@gmail.com'),(8,'Loy','contra',4,'loy@mail.com'),(9,'Loy','contra',4,'loy@mail.com');
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Dumping events for database 'pediloya'
@@ -1296,4 +1216,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-19 13:00:36
+-- Dump completed on 2024-11-26 10:04:26
