@@ -421,15 +421,14 @@ app.post("/usuario", async (req, res) => {
   const idrol = 4;
 
   if (!nombre || !contrasena || !email) {
-    return res
-      .status(400)
-      .send({ message: "Todos los campos son requeridos." });
+    return res.status(400).send({ message: "Todos los campos son requeridos." });
   }
 
   try {
     console.log(contrasena);
-    const hashedPassword = await bcrypt.hash(contrasena, 10); // Cifrar la contraseña96
+    const hashedPassword = await bcrypt.hash(contrasena, 10); // Cifrar la contraseña
     console.log(hashedPassword);
+
     const connection = await database.getconnection(); // Obtén la conexión
     const [result] = await connection
       .promise()
@@ -439,13 +438,55 @@ app.post("/usuario", async (req, res) => {
         idrol,
         email,
       ]);
-      console.log(result.insertId)
+
+    console.log(result.insertId);
+
     const token = jwt.sign(
       { id: result.insertId, nombre: nombre, rol: idrol },
       "secretkey"
     );
-    res.status(200).json({ token ,nombre: nombre, rol: idrol });
 
+    // Obtener el email del usuario recién creado
+    const queryMail = `SELECT email FROM usuario WHERE id = ?`;
+    connection.query(queryMail, [result.insertId], (error, results) => {
+      if (error) {
+        console.error("Error al obtener el email del usuario:", error);
+        return res.status(500).send({ message: "Error al obtener el email del usuario." });
+      }
+
+      if (results.length === 0) {
+        console.error("Usuario no encontrado.");
+        return res.status(404).send({ message: "Usuario no encontrado." });
+      }
+
+      const userEmail = results[0].email;
+
+      // Contenido del correo
+      const htmlContent = `
+        <h1>¡Bienvenido, ${nombre}!</h1>
+        <p>Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte con nosotros.</p>
+      `;
+
+      // Configuración del correo
+      const mailOptions = {
+        from: 're.fast.noti@gmail.com',
+        to: userEmail,
+        subject: 'Registro exitoso',
+        html: htmlContent,
+      };
+
+      // Enviar el correo
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Error al enviar el correo:", error);
+          return res.status(500).send({ message: "Error al enviar el correo." });
+        }
+
+        console.log("Correo enviado:", info.response);
+        // Responder después de enviar el correo
+        res.status(200).json({ token, nombre, rol: idrol, message: "Usuario creado y correo enviado correctamente." });
+      });
+    });
   } catch (error) {
     console.error("Error al crear usuario:", error);
     res.status(500).send({ message: "Error al crear el usuario." });
