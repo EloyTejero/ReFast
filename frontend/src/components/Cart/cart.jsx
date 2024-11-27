@@ -1,9 +1,9 @@
-import "../../SASS/style.css";
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2"; // Importa SweetAlert
 
 const Cart = () => {
   const [mensaje, setMensaje] = useState("");
@@ -15,8 +15,52 @@ const Cart = () => {
     getUser();
   }, []);
 
+  // Función para aumentar la cantidad de un producto
+ // Función para aumentar la cantidad de un producto
+const aumentarCantidad = async (id) => {
+  setCart(cart.map((producto) => 
+    producto.id === id
+      ? { ...producto, cantidad: producto.cantidad + 1 }
+      : producto
+  ));
+
+  // Obtener el producto actualizado
+  const producto = cart.find((p) => p.id === id);
+
+  // Actualizar el stock en el backend
+  try {
+    await axios.put(`http://localhost:4000/producto/${id}`, {
+      cantidad_stock: producto.cantidad_stock - 1, // Reducir stock
+    });
+  } catch (err) {
+    console.error("Error al actualizar el stock:", err);
+  }
+};
+
+// Función para disminuir la cantidad de un producto
+const disminuirCantidad = async (id) => {
+  const producto = cart.find((p) => p.id === id);
+  if (producto.cantidad > 1) {
+    setCart(cart.map((producto) => 
+      producto.id === id
+        ? { ...producto, cantidad: producto.cantidad - 1 }
+        : producto
+    ));
+
+    // Actualizar el stock en el backend
+    try {
+      await axios.put(`http://localhost:4000/producto/${id}`, {
+        cantidad_stock: producto.cantidad_stock + 1, // Aumentar stock
+      });
+    } catch (err) {
+      console.error("Error al actualizar el stock:", err);
+    }
+  }
+};
+
+  // Función para vaciar el carrito
   const vaciarCarrito = async () => {
-    const token = localStorage.getItem("authToken"); // Usa la clave correcta
+    const token = localStorage.getItem("authToken");
   
     if (!token) {
       setMensaje("No se encontró un token de autenticación.");
@@ -24,27 +68,31 @@ const Cart = () => {
     }
   
     try {
+      // Restaurar stock para todos los productos en el carrito
+      for (let producto of cart) {
+        await axios.put(`http://localhost:4000/producto/${producto.id}`, {
+          cantidad_stock: producto.cantidad_stock + producto.cantidad, // Aumentar el stock según la cantidad
+        });
+      }
+  
       await axios.delete("http://localhost:4000/carrito/vaciar", {
         headers: {
-          Authorization: `Bearer ${token}`, // Enviar el token en la cabecera
+          Authorization: `Bearer ${token}`,
         },
       });
   
-      setCart([]); // Vaciar el carrito
+      setCart([]);
       setMensaje("Carrito vaciado correctamente.");
     } catch (error) {
       console.error("Error al vaciar el carrito", error);
       setMensaje("Hubo un error al vaciar el carrito.");
     }
   };
-  
-  
-  
+
+  // Función para confirmar el pedido
   const confirmarPedido = async () => {
     if (!user || cart.length === 0) {
-      setMensaje(
-        "No hay productos en el carrito o no se ha encontrado el usuario."
-      );
+      setMensaje("No hay productos en el carrito o no se ha encontrado el usuario.");
       return;
     }
 
@@ -71,6 +119,7 @@ const Cart = () => {
     }
   };
 
+  // Función para eliminar un producto del carrito
   const eliminarProducto = (id) => {
     setCart(cart.filter((producto) => producto.id !== id));
   };
@@ -94,7 +143,20 @@ const Cart = () => {
                 <h3 className="cart-item-title">{producto.nombre}</h3>
                 <p className="cart-item-price">${producto.precio}</p>
                 <p className="cart-item-quantity">
-                  Cantidad: {producto.cantidad}
+                  <button
+                    className="quantity-button"
+                    onClick={() => disminuirCantidad(producto.id)}
+                    disabled={producto.cantidad <= 1}
+                  >
+                    -
+                  </button>
+                  {producto.cantidad}
+                  <button
+                    className="quantity-button"
+                    onClick={() => aumentarCantidad(producto.id)}
+                  >
+                    +
+                  </button>
                 </p>
                 <button
                   className="cart-item-remove"

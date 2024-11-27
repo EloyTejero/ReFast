@@ -285,51 +285,46 @@ app.get("/productos/categoria/:id", async (req, res) => {
 }); */
 
 app.delete('/producto/:id', async (req, res) => {
-    const productId = req.params.id;
+  const productId = req.params.id;
 
-    try {
-      const connection = await getconnection();
+  try {
+    const connection = await database.getconnection();
 
-         connection.execute('DELETE FROM pedido_producto WHERE id_producto = ?', [productId]);
-         connection.execute('DELETE FROM producto WHERE id = ?', [productId]);
-        res.status(200).send({ message: 'Producto eliminado correctamente' });
-    } catch (error) {
-        console.error('Error al eliminar el producto:', error);
-        res.status(500).send({ error: 'Error al eliminar el producto' });
-    }
+    // Eliminar las relaciones en 'producto_categoria'
+    await connection.execute('DELETE FROM producto_categoria WHERE id_producto = ?', [productId]);
+
+    // Eliminar las relaciones en 'pedido_producto'
+    await connection.execute('DELETE FROM pedido_producto WHERE id_producto = ?', [productId]);
+
+    // Finalmente, eliminar el producto en la tabla 'producto'
+    await connection.execute('DELETE FROM producto WHERE id = ?', [productId]);
+
+    res.status(200).send({ message: 'Producto eliminado correctamente' });
+  } catch (error) {
+      console.error('Error al eliminar el producto:', error);
+      res.status(500).send({ error: 'Error al eliminar el producto' });
+  }
 });
 
 app.put("/producto/:id", async (req, res) => {
-  const productId = req.params.id; // Obtener el ID del producto
-  const { nombre, descripcion, precio, cantidad_stock } = req.body; // Obtener los datos del cuerpo de la solicitud
+const productId = req.params.id;
+const { cantidad_stock } = req.body;
 
-  const connection = await getconnection(); // Obtener conexión a la base de datos
+try {
+  const connection = await database.getconnection();
 
-  // Consulta para actualizar el producto
-  const query =
-    "UPDATE producto SET nombre = ?, precio = ?, cantidad_stock = ?, descripcion = ? WHERE id = ?";
-
-  // Ejecutar la consulta con los valores proporcionados
-  connection.query(
-    query,
-    [nombre, precio, cantidad_stock, descripcion, productId],
-    (error, results) => {
-      if (error) {
-        console.error("Error al ejecutar la consulta:", error); // Imprimir el error en consola para mayor detalle
-        return res
-          .status(500)
-          .send({ message: "Error al actualizar el producto." });
-      }
-
-      if (results.affectedRows === 0) {
-        return res.status(404).send({ message: "Producto no encontrado." });
-      }
-
-      res.send({ message: "Producto actualizado correctamente." });
-    }
+  // Asegúrate de esperar que la actualización del stock se ejecute correctamente
+  await connection.execute(
+    'UPDATE producto SET cantidad_stock = ? WHERE id = ?',
+    [cantidad_stock, productId]
   );
-});
 
+  res.status(200).send({ message: 'Stock actualizado correctamente' });
+} catch (error) {
+  console.error('Error al actualizar el stock:', error);
+  res.status(500).send({ error: 'No se pudo actualizar el stock del producto' });
+}
+});
 app.post("/producto", upload.single("imagen"), async (req, res) => {
   console.log("Solicitud POST recibida en /producto");
   console.log("req.body:", req.body);
@@ -361,7 +356,7 @@ app.post("/producto", upload.single("imagen"), async (req, res) => {
     const cantidad_num = parseInt(cantidad);
     const precio_num = parseFloat(precio);
 
-    if (isNaN(cantidad_num) || isNaN(precio_num) || cantidad_num<0 || precio_num<0) {
+    if (isNaN(cantidad_num) || isNaN(precio_num)) {
       return res.status(400).json({ message: "Cantidad o precio no válidos." });
     }
 
@@ -635,7 +630,7 @@ app.post("/pedido/confirmarPedido", async (req, res) => {
 
     const queryPedido =
       "INSERT INTO pedido (id_usuario, fecha, precio_total, id_estado) VALUES (?, NOW(), ?, ?)";
-    connection.query(queryPedido, [usuario_id, precioTotal, 8], (err, result) => {
+    connection.query(queryPedido, [usuario_id, precioTotal, 6], (err, result) => {
       if (err) {
         console.error("Error al insertar el pedido:", err);
         return res.status(500).send({ message: "Error al guardar el pedido" });

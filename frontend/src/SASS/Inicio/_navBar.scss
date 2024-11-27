@@ -77,7 +77,13 @@
   display: flex;
   align-items: center;
 }
+.invisible {
+  visibility: hidden;
+}
 
+.visible {
+  visibility: visible;
+}
 .logo {
   width: 100% !important;
   max-width: 200px !important;

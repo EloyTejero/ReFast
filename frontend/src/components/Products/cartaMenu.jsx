@@ -30,23 +30,49 @@ const CartaMenu = ({ categoriaId }) => {
     fetchProductos();
   }, [categoriaId]);
 
-  const handleAddToCart = (producto) => {
-    if (!isAuthenticated) {
-      navigate("/login"); // Redirige al login si el usuario no está autenticado
-      return;
-    }
+  const handleAddToCart = async (producto) => {
+    if (producto.cantidad_stock > 0) {
+      // Actualizar el stock en el frontend
+      const nuevoStock = producto.cantidad_stock - 1;
+      const updatedProductos = productos.map((prod) =>
+        prod.id === producto.id ? { ...prod, cantidad_stock: nuevoStock } : prod
+      );
+      setProductos(updatedProductos);
+  
+      // Agregar al carrito
+      agregarAlCarrito({ ...producto, cantidad: 1 });
+  
+      // Enviar solicitud al servidor para actualizar el stock
+      try {
+        await axios.put(`http://localhost:4000/producto/${producto.id}`, {
+          cantidad_stock: nuevoStock,
+        });
+        Swal.fire({
+          icon: "success",
+          title: "Producto Agregado",
+          text: `${producto.nombre} ha sido agregado al carrito.`,
+          timer: 1000, // Desaparece automáticamente después de 2 segundos
 
-    agregarAlCarrito({ ...producto, cantidad: 1 });
-    Swal.fire({
-      icon: "success",
-      title: "Producto Agregado",
-      text: `${producto.nombre} ha sido agregado al carrito.`,
-      confirmButtonText: "OK",
-      background: "#f8f9fa",
-      color: "#333",
-      timer: 1000,
-    });
+        });
+      } catch (err) {
+        console.error("Error al actualizar el stock:", err);
+        // Restaurar el stock si hay un error al actualizar
+        setProductos(productos);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo actualizar el stock del producto.",
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Sin Stock",
+        text: "Este producto ya no tiene stock disponible.",
+      });
+    }
   };
+  
 
   return (
     <div>

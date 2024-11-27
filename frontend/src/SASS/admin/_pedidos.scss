@@ -111,7 +111,23 @@ $success-color: #2ecc71;
     }
   }
 }
+.no-pedidos {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #ff6347; /* Color rojo */
+  margin-top: 20px;
+  font-weight: bold;
+}
 
+.pedido-lista-container {
+  min-height: 400px; /* Esto asegura que el contenedor tenga una altura mínima */
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;
+}
 // Media Queries (Responsividad)
 @media (max-width: 1024px) {
   .pedido-lista-container {
